@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Dieses Proramm dient zu Einrichtung eines FullMesh auf Layer2 mit hilfe von LACPv3
+# Dieses Proramm dient zur Einrichtung eines FullMesh auf Layer2 mit hilfe von LACPv3
 # Unterstuetzt werden dabei bis zu 9 Nodes und maximal 9 Batman Instanzen
 # Erstellt von Thomas Fragstein
 
@@ -15,7 +15,7 @@ NODENAME=('map' 'node01' 'node02' )
 # IP der Nodes (Anzahl muss mit der Arrayvariablen in $NODENAME übereinstimmen)
 NODEIP=('1.2.1.1' '1.1.2.1' '1.1.1.2' )
 
-# Programmstart
+# Programmstart:
 
 if [[ ${#NODEIP[*]} != ${#NODENAME[*]} ]]
 then
@@ -32,7 +32,7 @@ echo "  Konfiguration fuer ${NODENAME[$(($NODE-1))]}"
 echo "========================================================================================================================================"
   for RNODE in `seq 1 ${#NODEIP[*]}`
   do
-    # Tunnel auf sich selbst macht keinen sinn
+    # Tunnel auf sich selbst macht keinen Sinn
     [ "$NODE" -eq "$RNODE" ] && continue
 
     # L2TPv3 Tunnel einrichten
@@ -43,7 +43,7 @@ echo "==========================================================================
 
       # Sessions innerhalb des L2TPv3 Tunnels einrichten
       echo "ip l2tp add session name bb${DOMAINNAME[$(($DOMAINID2-1))]}-${NODENAME[$((${RNODE}-1))]} tunnel_id ${NODE}1${RNODE} session_id ${NODE}${DOMAINID2}${RNODE} peer_session_id ${RNODE}${DOMAINID2}${NODE}"
-      # HINWEIS: Bei Debian 7 bitte die folgende Zeile auskomentieren da der Kernel diese open noch nicht unterstützt.
+      # HINWEIS: Bei Debian 7 bitte die folgende Zeile auskomentieren da der Kernel diese Option noch nicht unterstützt.
       echo "ip link set bb${DOMAINNAME[$(($DOMAINID2-1))]}-${NODENAME[$((${RNODE}-1))]} address 00:16:3e:b${NODE}:b${DOMAINID2}:b${RNODE}"
       echo "ip link set bb${DOMAINNAME[$(($DOMAINID2-1))]}-${NODENAME[$((${RNODE}-1))]} up mtu 1488"
       echo "batctl -m bat0-${DOMAINNAME[$(($DOMAINID2-1))]} if add bb${DOMAINNAME[$(($DOMAINID2-1))]}-${NODENAME[$((${RNODE}-1))]}"
